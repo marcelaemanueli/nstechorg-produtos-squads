@@ -33,6 +33,23 @@
   .squad-tag { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid #e0e0e0; color: #555; background: #fff; }
   .squad-tag.highlight { border-color: #E84A0C; color: #a83200; background: #fde8e0; }
   .simple-areas { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
+
+  /* Botão flutuante para Portfólio de Produtos */
+  .ver-produtos-btn{
+    position: fixed; top: 20px; right: 20px; z-index: 100;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 999px;
+    background: #E85D2F; color: white;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(232,93,47,0.3);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .ver-produtos-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232,93,47,0.4);
+  }
 </style>
 </head>
 <body>
@@ -46,6 +63,14 @@
   <input type="text" id="search" placeholder="Buscar squad, torre ou BU..." oninput="doSearch(this.value)">
   <div id="org"></div>
 </div>
+
+<!-- Botão flutuante: aponta para o repositório de produtos (portfolio-confluence) -->
+<a href="https://marcelaemanueli.github.io/portfolio-confluence/" target="_blank" rel="noopener" class="ver-produtos-btn">
+  Ver portfólio de produtos
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <path d="M7 17 17 7M9 7h8v8"/>
+  </svg>
+</a>
 
 <script>
 const data = [
@@ -131,29 +156,4 @@ function doSearch(val) { buildOrg(val.trim().toLowerCase() || null); }
 buildOrg(null);
 </script>
 </body>
- <!-- Botão flutuante no canto superior direito (cola dentro do <body>, antes de fechar </body>) -->
-<a href="./produtos/" class="ver-produtos-btn">
-  Ver portfólio de produtos
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-    <path d="M7 17 17 7M9 7h8v8"/>
-  </svg>
-</a>
-
-<style>
-.ver-produtos-btn{
-  position: fixed; top: 20px; right: 20px; z-index: 100;
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 18px; border-radius: 999px;
-  background: #E85D2F; color: white;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 14px; font-weight: 500;
-  text-decoration: none;
-  box-shadow: 0 4px 14px rgba(232,93,47,0.3);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.ver-produtos-btn:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(232,93,47,0.4);
-}
-</style>
 </html>
