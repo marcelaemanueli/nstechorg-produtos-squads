@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrutura nstech: BUs, Torres e Squads</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; padding: 2rem 1rem; }
+  .container { max-width: 800px; margin: 0 auto; }
+  .header { margin-bottom: 1.5rem; }
+  .header p.tag { font-size: 11px; letter-spacing: 1px; color: #E84A0C; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+  .header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .header p.sub { font-size: 13px; color: #666; }
+  input[type="text"] { width: 100%; padding: 10px 14px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 16px; background: #fff; color: #1a1a1a; outline: none; }
+  input[type="text"]:focus { border-color: #E84A0C; }
+  .bu { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .bu-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .bu-header:hover { background: #fafafa; }
+  .bu-label { font-size: 15px; font-weight: 600; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #fde8e0; color: #a83200; margin-left: 8px; font-weight: 500; }
+  .chevron { width: 16px; height: 16px; transition: transform 0.2s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(90deg); }
+  .towers-wrap { padding: 0 12px 12px; display: none; }
+  .towers-wrap.open { display: block; }
+  .tower { margin-bottom: 6px; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden; }
+  .tower-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; cursor: pointer; background: #f9f9f9; }
+  .tower-header:hover { background: #f2f2f2; }
+  .tower-name { font-size: 14px; font-weight: 600; }
+  .tower-count { font-size: 11px; color: #888; }
+  .squads-wrap { display: none; padding: 10px 14px; flex-wrap: wrap; gap: 6px; }
+  .squads-wrap.open { display: flex; }
+  .squad-tag { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid #e0e0e0; color: #555; background: #fff; }
+  .squad-tag.highlight { border-color: #E84A0C; color: #a83200; background: #fde8e0; }
+  .simple-areas { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
+
+  /* Botão flutuante para Portfólio de Produtos */
+  .ver-produtos-btn{
+    position: fixed; top: 20px; right: 20px; z-index: 100;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 999px;
+    background: #E85D2F; color: white;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(232,93,47,0.3);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .ver-produtos-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232,93,47,0.4);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <p class="tag">nstech</p>
+    <h1>Estrutura nstech: BUs, Torres e Squads</h1>
+    <p class="sub">Clique em uma BU para ver as Torres, e em cada Torre para ver os Squads.</p>
+  </div>
+
+  <input type="text" id="search" placeholder="Buscar squad, torre ou BU..." oninput="doSearch(this.value)">
+  <div id="org"></div>
+</div>
+
+<!-- Botão flutuante: volta para a página principal (Portfólio de Produtos) -->
+<a href="./" class="ver-produtos-btn">
+  ← Portfólio de produtos
+</a>
+
+<script>
+const data = [
+  {
+    id: "corp", label: "Corporativo", simple: true,
+    areas: ["Produto","Tech","Finanças","Pessoas","M&A"]
+  },
+  {
+    id: "emb", label: "BU Embarcador", color: "#E84A0C",
+    towers: [
+      { name: "Torre Embarcador", areas: ["Foundation","Gestão de Entregas","Roteirizador","Cross Service","Gate Out - Agendamento","Gate Out - Varejo","Gate Out - Indústria","Gate In - QA","Gate In - Rodoviário / Ferroviário","Gate In - Marítimo / Hidroviário / Estoque","Gate In - Container / Gestão de Vagas","Gate In - Automação / Acesso / Mobile / TPE","Squad Dados","Carteira - B3 / Rota Certa","Carteira - TOS / Saagra","Carteira - GTM / WMS","Carteira - Rumo","Carteira - Petro / Bport","Pré Emissão","Pós Emissão","Urgencias Prod","Backlog / HML Causa Raiz","Logistica Reversa","Emissões","Unilever","Torre de Controle","Dedicados","Dados","Experiência","Macros","Swat","Frete Rápido"] },
+      { name: "Torre MG", areas: ["Atua","Integrações","ERP","TMS","Cabotagem","Foundation","Comercial","ERP - Evolução / Sustentação","TMS - Evolução","TMS - Sustentação","Dedicadas - Crew Motz","Dedicadas - Crew Trato","Dedicadas - Crew Brenex","Dedicadas - Crew Brado","Serviços Carteira","Projetos Implantação","BI / Dados","TMS - Carteira","TMS - Projetos","TMS - Dedicada Maroni","TMS - Dedicada Transben","TMS - Migrações","TMS - Melhorias","Ecossistema","New Cabotagem","NSKote","Legado"] },
+      { name: "Torre PME", areas: ["APP","ERP Backoffice","Framework","Fiscal","Operações","Argo","Integrações","Central Emissão","TMS","Nexus","Link","ERP","nsdocs","Buonny Cadastro","Visibilidade Logística","Monitoramento"] },
+      { name: "Torre VGR", areas: ["Trafegus","Onisys","Cadastro Unificado","Pesquisa 4.0","Rastrear","Opentech","Elsa Workflow","Zeus","Workflow","BRK","BI"] },
+      { name: "Torre IM", areas: ["Averbação","Corretores","Faturamento","Sustentação","Implantação","Pricelog","Originação","Resseguro","Eficiência","Foundation"] },
+    ]
+  },
+  {
+    id: "psl", label: "BU PSL", color: "#E84A0C",
+    towers: [
+      { name: "Torre TMS", areas: ["TMS Médio / Grande","TMS Pequeno / Micro","TMS Agro","TMS Cabotagem","Jornada Motorista","Nskote","Nsdocs"] },
+      { name: "Torre Fintech", areas: ["Gasola","nsPedagio","Qualp","PEF","Conta Digital / NSFlow","Refatoração Gasola"] },
+      { name: "Torre Mobilidade", areas: ["Globus","Siga","Luna"] },
+    ]
+  }
+];
+
+function chevronSVG(open) {
+  return `<svg class="chevron ${open?'open':''}" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 4l4 4-4 4"/></svg>`;
+}
+
+function buildOrg(filter) {
+  const org = document.getElementById('org');
+  org.innerHTML = '';
+  data.forEach(bu => {
+    const div = document.createElement('div');
+    div.className = 'bu';
+    if (bu.simple) {
+      const filtered = filter ? bu.areas.filter(a => a.toLowerCase().includes(filter)) : bu.areas;
+      if (filter && filtered.length === 0 && !bu.label.toLowerCase().includes(filter)) return;
+      const open = filter && filtered.length > 0;
+      div.innerHTML = `
+        <div class="bu-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.chevron').classList.toggle('open')">
+          <span><span class="bu-label">${bu.label}</span><span class="badge">${bu.areas.length} áreas</span></span>
+          ${chevronSVG(open)}
+        </div>
+        <div class="towers-wrap ${open?'open':''}">
+          <div class="simple-areas">
+            ${filtered.map(a=>`<span class="squad-tag ${filter&&a.toLowerCase().includes(filter)?'highlight':''}">${a}</span>`).join('')}
+          </div>
+        </div>`;
+    } else {
+      const buMatch = bu.label.toLowerCase().includes(filter||'');
+      const towersHtml = bu.towers.map(t => {
+        const filtAreas = filter ? t.areas.filter(a => a.toLowerCase().includes(filter)) : t.areas;
+        const tMatch = t.name.toLowerCase().includes(filter||'');
+        if (filter && filtAreas.length === 0 && !tMatch && !buMatch) return '';
+        const tOpen = filter && (filtAreas.length > 0 || tMatch);
+        return `<div class="tower">
+          <div class="tower-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.chevron').classList.toggle('open')">
+            <span class="tower-name">${t.name}</span>
+            <span style="display:flex;align-items:center;gap:8px;"><span class="tower-count">${t.areas.length} squads</span>${chevronSVG(tOpen)}</span>
+          </div>
+          <div class="squads-wrap ${tOpen?'open':''}">
+            ${(filter&&!buMatch?filtAreas:t.areas).map(a=>`<span class="squad-tag ${filter&&a.toLowerCase().includes(filter)?'highlight':''}">${a}</span>`).join('')}
+          </div>
+        </div>`;
+      }).join('');
+      if (filter && !towersHtml.replace(/<[^>]*>/g,'').trim() && !buMatch) return;
+      const buOpen = !!filter;
+      div.innerHTML = `
+        <div class="bu-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.chevron').classList.toggle('open')">
+          <span><span class="bu-label" style="color:${bu.color}">${bu.label}</span><span class="badge">${bu.towers.length} torres</span></span>
+          ${chevronSVG(buOpen)}
+        </div>
+        <div class="towers-wrap ${buOpen?'open':''}">${towersHtml}</div>`;
+    }
+    org.appendChild(div);
+  });
+}
+
+function doSearch(val) { buildOrg(val.trim().toLowerCase() || null); }
+buildOrg(null);
+</script>
+</body>
+</html>
